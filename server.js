@@ -4,14 +4,16 @@ require('dotenv').config();
 // DB connection
 require('./config/db-connection')
 
+// Imports the Express library
 const express = require('express');
 
-// Invoke that imported express method to create a new Express application, and I'm storing it inside of this variable app
+// Creates a new Express application instance
 const app = express();
 
+// Sets the port number server will listen on
 const PORT = process.env.PORT || 3000;
 
-// Get our server running
+// Starts the server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
