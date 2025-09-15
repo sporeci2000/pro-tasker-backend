@@ -81,8 +81,22 @@ async function loginUser(req, res) {
     }
 }
 
+async function getCurrentUser(req, res) {
+    try {
+        // req.user comes from the middleware 
+        res.status(200).json({
+            message: 'Authenticated user info',
+            user: req.user
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+}
+
 // Export controller functions so they can be used in routes
 module.exports = {
     registerUser,
     loginUser,
+    getCurrentUser
 };
