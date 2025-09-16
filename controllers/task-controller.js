@@ -16,7 +16,7 @@ async function createTask(req, res) {
             return res.status(401).json({ error: 'Not authorized' });
         }
 
-        const task = await Task.create({
+        let task = await Task.create({
             title,
             description,
             status,
@@ -26,8 +26,10 @@ async function createTask(req, res) {
         });
 
         // populate before sending response
-        task = await task.populate('assignedTo', 'username email')
-            .populate('project', 'name');
+        task = await task.populate([
+            { path: 'assignedTo', select: 'username email' },
+            { path: 'project', select: 'name' }
+        ]);
 
         res.status(201).json({ success: 'Task created', task });
     } catch (error) {
@@ -84,8 +86,10 @@ async function updateTask(req, res) {
         await task.save();
 
         // populate before sending response
-        task = await task.populate('assignedTo', 'username email')
-            .populate('project', 'name');
+        task = await task.populate([
+            { path: 'assignedTo', select: 'username email' },
+            { path: 'project', select: 'name' }
+        ]);
 
         res.status(200).json(task);
     } catch (error) {
