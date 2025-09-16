@@ -1,11 +1,12 @@
 const express = require('express');
+const verifyAuthentication = require('../middleware/auth-middleware');
 const {
     createTask,
     getTasks,
     updateTask,
     deleteTask,
 } = require('../controllers/task-controller');
-const verifyAuthentication = require('../middleware/auth-middleware');
+
 
 const router = express.Router({ mergeParams: true });
 

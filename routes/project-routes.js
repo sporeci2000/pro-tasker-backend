@@ -8,10 +8,10 @@ const {
     deleteProject,
 } = require('../controllers/project-controller');
 
-const taskRoutes = require('./task-routes');
-router.use('/:projectId/tasks', taskRoutes);
-
 const router = express.Router();
+const taskRoutes = require('./task-routes');
+
+router.use('/:projectId/tasks', taskRoutes);
 
 // All project routes require authentication
 router.use(verifyAuthentication);
