@@ -25,6 +25,10 @@ async function createTask(req, res) {
             project: req.params.projectId,
         });
 
+        // populate before sending response
+        task = await task.populate('assignedTo', 'username email')
+            .populate('project', 'name');
+
         res.status(201).json({ success: 'Task created', task });
     } catch (error) {
         console.error(error);
@@ -44,7 +48,9 @@ async function getTasks(req, res) {
             return res.status(401).json({ error: 'Not authorized' });
         }
 
-        const tasks = await Task.find({ project: req.params.projectId });
+        const tasks = await Task.find({ project: req.params.projectId })
+            .populate('assignedTo', 'username email')   // show user details
+            .populate('project', 'name');
         res.status(200).json(tasks);
     } catch (error) {
         console.error(error);
@@ -75,8 +81,13 @@ async function updateTask(req, res) {
         task.priority = req.body.priority || task.priority;
         task.assignedTo = req.body.assignedTo || task.assignedTo;
 
-        const updatedTask = await task.save();
-        res.status(200).json(updatedTask);
+        await task.save();
+
+        // populate before sending response
+        task = await task.populate('assignedTo', 'username email')
+            .populate('project', 'name');
+
+        res.status(200).json(task);
     } catch (error) {
         console.error(error);
         res.status(400).json({ error: error.message });

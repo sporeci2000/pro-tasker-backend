@@ -11,6 +11,8 @@ const authRoutes = require('./routes/auth-routes');
 
 const projectRoutes = require('./routes/project-routes');
 
+const cors = require('cors');
+
 // Creates a new Express application instance
 const app = express();
 
@@ -19,6 +21,8 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON
 app.use(express.json());
+
+app.use(cors());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
